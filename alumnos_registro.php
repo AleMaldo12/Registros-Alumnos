@@ -1,51 +1,91 @@
-<?php include("config/conexion.php"); ?>
+<?php
+include("conexion.php/conexion.php");
+
+/* Obtener grupos activos */
+$grupos = $conn->query("
+    SELECT id_grupo, nombre_grupo 
+    FROM grupo 
+    ORDER BY nombre_grupo
+");
+?>
+
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+<meta charset="UTF-8">
 <title>Registro de Alumnos</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <style>
-body{font-family:Arial;background:#eef2f7}
-.card{
-width:380px;margin:40px auto;background:white;
-padding:25px;border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,.1)
+body{
+    background:#eef2f7;
 }
-input,select{
-width:100%;padding:10px;margin:8px 0;
-border:1px solid #ccc;border-radius:6px
-}
-button{
-width:100%;padding:12px;
-background:#2563eb;color:white;
-border:none;border-radius:8px
+.card-form{
+    max-width:420px;
+    margin:auto;
 }
 </style>
+
 </head>
+
 <body>
 
-<div class="card">
-<h2>Registro de Alumno</h2>
+<div class="container mt-5">
+
+<div class="card shadow card-form">
+<div class="card-body">
+
+<h4 class="mb-3 text-center">Registro de Alumno</h4>
 
 <form action="alumno_guardar.php" method="POST">
 
-<input name="nombre" placeholder="Nombre" required>
-<input name="ap_pat" placeholder="Apellido Paterno" required>
-<input name="ap_mat" placeholder="Apellido Materno" required>
+<div class="mb-3">
+<label>Nombre</label>
+<input name="nombre" class="form-control" required>
+</div>
 
-<select name="grupo_id" required>
+<div class="mb-3">
+<label>Apellido Paterno</label>
+<input name="apellido_pat" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Apellido Materno</label>
+<input name="apellido_mat" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Grupo</label>
+
+<select name="id_grupo" class="form-control" required>
 <option value="">Seleccionar Grupo</option>
 
-<?php
-$q=$conn->query("SELECT id,nombre_grupo FROM grupos");
-while($g=$q->fetch_assoc()){
-echo "<option value='{$g['id']}'>{$g['nombre_grupo']}</option>";
-}
-?>
+<?php while($g = $grupos->fetch_assoc()){ ?>
+
+<option value="<?= $g['id_grupo'] ?>">
+<?= $g['nombre_grupo'] ?>
+</option>
+
+<?php } ?>
+
 </select>
 
-<button>Registrar Alumno</button>
+</div>
+
+<button class="btn btn-primary w-100">
+Registrar Alumno
+</button>
+
+<a href="dashboard.php" class="btn btn-secondary w-100 mt-2">
+Volver al Dashboard
+</a>
 
 </form>
+
+</div>
+</div>
+
 </div>
 
 </body>
