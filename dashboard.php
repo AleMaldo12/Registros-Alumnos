@@ -49,7 +49,15 @@ body{
 <hr>
 
 <a href="dashboard.php">Inicio</a>
+
+<!-- MODULO GRUPOS -->
 <a href="grupos/registro.php">Registro de Grupos</a>
+
+<!-- MODULO ALUMNOS -->
+<a href="alumnos_registro.php">Registro de Alumnos</a>
+<a href="alumnos_gestion.php">Gestión de Alumnos</a>
+
+<!-- MODULO CONFIGURACION -->
 <a href="catalogos/catalogos.php">Configurar Catálogos</a>
 
 </div>
@@ -62,20 +70,46 @@ body{
 
 <div class="row">
 
-<div class="col-md-4">
+<!-- REGISTRO GRUPOS -->
+<div class="col-md-4 mb-4">
 <div class="card shadow">
 <div class="card-body">
 <h5>Registro de Grupos</h5>
+<p>Crear y administrar grupos académicos</p>
 <a href="grupos/registro.php" class="btn btn-primary">Entrar</a>
 </div>
 </div>
 </div>
 
-<div class="col-md-4">
+<!-- REGISTRO ALUMNOS -->
+<div class="col-md-4 mb-4">
 <div class="card shadow">
 <div class="card-body">
-<h5>Catálogos</h5>
-<a href="catalogos/catalogos.php" class="btn btn-success">Entrar</a>
+<h5>Registro de Alumnos</h5>
+<p>Alta de nuevos estudiantes</p>
+<a href="alumnos_registro.php" class="btn btn-success">Entrar</a>
+</div>
+</div>
+</div>
+
+<!-- GESTION ALUMNOS -->
+<div class="col-md-4 mb-4">
+<div class="card shadow">
+<div class="card-body">
+<h5>Gestión de Alumnos</h5>
+<p>Editar, activar o inactivar alumnos</p>
+<a href="alumnos_gestion.php" class="btn btn-warning">Entrar</a>
+</div>
+</div>
+</div>
+
+<!-- CATALOGOS -->
+<div class="col-md-4 mb-4">
+<div class="card shadow">
+<div class="card-body">
+<h5>Configuración de Catálogos</h5>
+<p>Administrar carreras, grados y turnos</p>
+<a href="catalogos/catalogos.php" class="btn btn-dark">Entrar</a>
 </div>
 </div>
 </div>

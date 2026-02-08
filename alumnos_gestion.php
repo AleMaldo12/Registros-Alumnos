@@ -1,34 +1,58 @@
-<?php include("config/conexion.php"); ?>
+<?php
+include("conexion.php/conexion.php");
+
+/* Obtener alumnos con grupo */
+$sql = "
+SELECT 
+    a.id_alumno,
+    a.nombre,
+    a.apellido_pat,
+    a.apellido_mat,
+    a.activo,
+    g.nombre_grupo
+FROM alumno a
+LEFT JOIN grupo g ON g.id_grupo = a.id_grupo
+ORDER BY a.id_alumno DESC
+";
+
+$resultado = $conn->query($sql);
+?>
+
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-<title>Alumnos Registrados</title>
+<meta charset="UTF-8">
+<title>Gestión de Alumnos</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <style>
-body{font-family:Arial;background:#eef2f7}
-.wrap{
-width:95%;margin:30px auto;background:white;
-padding:20px;border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,.1)
+body{
+    background:#eef2f7;
 }
-table{width:100%;border-collapse:collapse}
-th,td{border:1px solid #ddd;padding:10px;text-align:center}
-.activo{color:green;font-weight:bold}
-.inactivo{color:red;font-weight:bold}
-.btn{
-padding:6px 10px;border-radius:6px;
-color:white;text-decoration:none
+.estado-activo{
+    color:green;
+    font-weight:bold;
 }
-.edit{background:#16a34a}
-.on{background:#2563eb}
-.off{background:#f59e0b}
+.estado-inactivo{
+    color:red;
+    font-weight:bold;
+}
 </style>
 </head>
+
 <body>
 
-<div class="wrap">
-<h2>Gestión de Alumnos</h2>
+<div class="container mt-5">
 
-<table>
+<div class="card shadow">
+<div class="card-body">
+
+<h3 class="mb-4">Gestión de Alumnos</h3>
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-dark">
 <tr>
 <th>ID</th>
 <th>Alumno</th>
@@ -36,39 +60,64 @@ color:white;text-decoration:none
 <th>Estado</th>
 <th>Acciones</th>
 </tr>
+</thead>
 
-<?php
-$sql="SELECT a.*, g.nombre_grupo
-FROM alumnos a
-LEFT JOIN grupos g ON g.id=a.grupo_id";
+<tbody>
 
-$r=$conn->query($sql);
+<?php while($row = $resultado->fetch_assoc()){ ?>
 
-while($row=$r->fetch_assoc()){
+<tr>
 
-$estado = $row['estado']
-? "<span class='activo'>Activo</span>"
-: "<span class='inactivo'>Inactivo</span>";
+<td><?= $row['id_alumno'] ?></td>
 
-echo "<tr>
-<td>{$row['id']}</td>
-<td>{$row['nombre']} {$row['apellido_paterno']} {$row['apellido_materno']}</td>
-<td>{$row['nombre_grupo']}</td>
-<td>$estado</td>
+<td>
+<?= $row['nombre']." ".$row['apellido_pat']." ".$row['apellido_mat'] ?>
+</td>
+
+<td><?= $row['nombre_grupo'] ?? 'Sin grupo' ?></td>
+
+<td>
+<?php if($row['activo']){ ?>
+<span class="estado-activo">Activo</span>
+<?php }else{ ?>
+<span class="estado-inactivo">Inactivo</span>
+<?php } ?>
+</td>
+
 <td>
 
-<a class='btn edit' href='alumno_editar.php?id={$row['id']}'>Modificar</a>
+<a class="btn btn-success btn-sm"
+href="alumno_editar.php?id=<?= $row['id_alumno'] ?>">
+Modificar
+</a>
 
-<a class='btn on' href='alumno_activar.php?id={$row['id']}'>Activar</a>
+<a class="btn btn-primary btn-sm"
+href="alumno_activar.php?id=<?= $row['id_alumno'] ?>">
+Activar
+</a>
 
-<a class='btn off' href='alumno_inactivar.php?id={$row['id']}'>Inactivar</a>
+<a class="btn btn-warning btn-sm"
+href="alumno_inactivar.php?id=<?= $row['id_alumno'] ?>">
+Inactivar
+</a>
 
 </td>
-</tr>";
-}
-?>
+
+</tr>
+
+<?php } ?>
+
+</tbody>
 
 </table>
+
+<a href="dashboard.php" class="btn btn-secondary">
+Volver al Dashboard
+</a>
+
+</div>
+</div>
+
 </div>
 
 </body>

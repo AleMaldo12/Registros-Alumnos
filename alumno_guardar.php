@@ -1,14 +1,34 @@
 <?php
-include("config/conexion.php");
+include("conexion.php/conexion.php");
 
-$n=$_POST['nombre'];
-$ap=$_POST['ap_pat'];
-$am=$_POST['ap_mat'];
-$g=$_POST['grupo_id'];
+if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-$conn->query("INSERT INTO alumnos
-(nombre,apellido_paterno,apellido_materno,grupo_id,estado)
-VALUES('$n','$ap','$am','$g',1)");
+    $nombre = trim($_POST['nombre']);
+    $apellido_pat = trim($_POST['apellido_pat']);
+    $apellido_mat = trim($_POST['apellido_mat']);
+    $id_grupo = intval($_POST['id_grupo']);
 
-echo "Alumno registrado correctamente";
+    if($nombre == "" || $apellido_pat == "" || $apellido_mat == "" || $id_grupo == 0){
+        die("Todos los campos son obligatorios");
+    }
+
+    $stmt = $conn->prepare("
+        INSERT INTO alumno
+        (nombre, apellido_pat, apellido_mat, id_grupo)
+        VALUES (?, ?, ?, ?)
+    ");
+
+    $stmt->bind_param("sssi",
+        $nombre,
+        $apellido_pat,
+        $apellido_mat,
+        $id_grupo
+    );
+
+    if($stmt->execute()){
+        header("Location: alumnos_registro.php?ok=1");
+    }else{
+        echo "Error al guardar alumno";
+    }
+}
 ?>

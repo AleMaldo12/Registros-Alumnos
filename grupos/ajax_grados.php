@@ -1,11 +1,22 @@
 <?php
 include("../config/conexion.php");
 
-$query = $conn->query("SELECT * FROM cat_grado WHERE activo = 1");
+$id = $_GET['id_carrera'];
+
+$sql = "
+SELECT g.*
+FROM carrera_grado cg
+JOIN cat_grado g ON g.id_grado = cg.id_grado
+WHERE cg.id_carrera = $id
+AND g.activo = 1
+";
+
+$r = $conn->query($sql);
 
 echo '<option value="">Seleccione</option>';
 
-while($row = $query->fetch_assoc()){
-    echo '<option value="'.$row['clave'].'">'.$row['clave'].'</option>';
+while($row = $r->fetch_assoc()){
+    echo "<option value='{$row['id_grado']}' data-clave='{$row['clave']}'>
+            {$row['clave']}
+          </option>";
 }
-?>
